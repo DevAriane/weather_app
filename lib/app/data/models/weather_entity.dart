@@ -1,3 +1,8 @@
+import 'current.dart';
+import 'current_units.dart';
+import 'hourly.dart';
+import 'hourly_units.dart';
+
 class WeatherEntity {
   final double latitude;
   final double longitude;
@@ -41,11 +46,3 @@ class WeatherEntity {
     );
   }
 }
-
-
-
-
-
-
-
-

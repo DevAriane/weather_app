@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 class AppBarColorConstants {
-  static const int hot = 0xFF8BA9DF;
-  static const int weightHot = 0xFFDF928C;
-  static const int good = 0xFF533A9F;
-  static const int doux = 0xFF142033;
-  static const int ice = 0xFF94B1E5;
+  static const Color hot = Color(0xFF8BA9DF);
+  static const Color weightHot = Color(0xFFDF928C);
+  static const Color good = Color(0xFF533A9F);
+  static const Color doux = Color(0xFF142033);
+  static const Color ice = Color(0xFF94B1E5);
 }
