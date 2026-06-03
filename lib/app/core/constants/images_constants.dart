@@ -10,4 +10,9 @@ class ImagesConstants {
   static const cloudyAT = 'assets/icons/Cloudy-clear at times.svg';
   static const partlyCN = 'assets/icons/Partly-cloudy-night.svg';
   static const partlyCloudy = 'assets/icons/Partly-cloudy.svg';
+  static const soleil = 'assets/images/Sun.png';
+  static const nuit = 'assets/images/nuit.png';
+  static const pluie = 'assets/images/pluie.png';
+  static const neige = 'assets/images/neige.png';
+  static const imageBlanc = 'assets/images/backwhiteimage.png';
 }

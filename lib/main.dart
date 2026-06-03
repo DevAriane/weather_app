@@ -16,16 +16,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Weather APP',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Color(0xFF8BA9DF),
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.dark,
-          ),
-        ),
-        textTheme: GoogleFonts.sarabunTextTheme(),
-      ),
+      theme: ThemeData(textTheme: GoogleFonts.sarabunTextTheme()),
       home: const WeatherView(),
     );
   }

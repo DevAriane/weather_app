@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../core/constants/images_constants.dart';
+import '../data/models/weather_entity.dart';
 
 class HourlyTemperature extends StatelessWidget {
-  HourlyTemperature({super.key});
+  final WeatherEntity weather;
 
-  final List<Map<String, dynamic>> hourlyTemperature = [
-    {"hour": "17:00", "icon": ImagesConstants.sunny, "temperature": "30°"},
-    {"hour": "17:30", "icon": ImagesConstants.sunny, "temperature": "30°"},
-    {
-      "hour": "18:00",
-      "icon": ImagesConstants.partlyCloudy,
-      "temperature": "30°",
-    },
-    {"hour": "18:30", "icon": ImagesConstants.cloudyAT, "temperature": "30°"},
-    {"hour": "19:00", "icon": ImagesConstants.cloudyAT, "temperature": "30°"},
-    {"hour": "19:30", "icon": ImagesConstants.partlyCN, "temperature": "30°"},
-    {"hour": "20:00", "icon": ImagesConstants.partlyCN, "temperature": "30°"},
-    {"hour": "20:30", "icon": ImagesConstants.cloudyCATN, "temperature": "30°"},
-  ];
+  const HourlyTemperature({super.key, required this.weather});
+
+  String _getHourlyIcon(double temp) {
+    if (temp >= 30) return ImagesConstants.sunny;
+    if (temp >= 25) return ImagesConstants.partlyCloudy;
+    if (temp >= 20) return ImagesConstants.cloudyAT;
+    return ImagesConstants.partlyCN;
+  }
+
+  String _formatHour(String rawDateTime) {
+    return rawDateTime.split('T').last;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<String> hoursList = weather.hourly.time;
+    final List<double> tempsList = weather.hourly.temperature2m;
+
     return Container(
-      margin: const EdgeInsets.only(left: 15, top: 220),
+      margin: const EdgeInsets.only(left: 15, top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,21 +42,26 @@ class HourlyTemperature extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: hourlyTemperature.map((h) {
+
+              children: List.generate(hoursList.length, (index) {
+                final String rawHour = hoursList[index];
+                final double currentTemp = tempsList[index];
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
                       Text(
-                        h["hour"],
+                        _formatHour(rawHour),
                         style: const TextStyle(
                           fontSize: 10,
                           color: Color(0xFF474747),
                         ),
                       ),
                       const SizedBox(height: 5),
+
                       SvgPicture.asset(
-                        h["icon"],
+                        _getHourlyIcon(currentTemp),
                         height: 18,
                         colorFilter: const ColorFilter.mode(
                           Color(0xFF474747),
@@ -62,8 +69,9 @@ class HourlyTemperature extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5),
+
                       Text(
-                        h["temperature"],
+                        "${currentTemp.round()}°",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xFF474747),
@@ -72,7 +80,7 @@ class HourlyTemperature extends StatelessWidget {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
             ),
           ),
         ],

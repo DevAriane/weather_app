@@ -4,13 +4,21 @@ import 'package:google_fonts/google_fonts.dart';
 import '../core/constants/images_constants.dart';
 
 class Temperature extends StatelessWidget {
-  const Temperature({super.key});
+  double temperature;
+  double latitude;
+  double longitude;
+  Temperature({
+    super.key,
+    required this.temperature,
+    required this.latitude,
+    required this.longitude,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
-      child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -19,9 +27,9 @@ class Temperature extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  "30°C",
-                  style: TextStyle(
+                Text(
+                  "$temperature°C",
+                  style: const TextStyle(
                     fontSize: 45,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFFFFFFF),
@@ -32,12 +40,12 @@ class Temperature extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "H: 33",
+                      "H: ${longitude.toStringAsFixed(0)}",
                       style: GoogleFonts.nunito(color: const Color(0xFFFFFFFF)),
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "L: 23",
+                      "L: ${latitude.toStringAsFixed(0)}",
                       style: GoogleFonts.nunito(color: const Color(0xFFFFFFFF)),
                     ),
                   ],
@@ -59,6 +67,7 @@ class Temperature extends StatelessWidget {
                 const SizedBox(width: 5),
                 Text(
                   'Sakhon province, Thailand',
+                  maxLines: 2,
                   style: GoogleFonts.nunito(
                     fontSize: 12,
                     color: const Color(0xFFFFFFFF),
