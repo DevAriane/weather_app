@@ -25,13 +25,13 @@ class WeatherView extends StatelessWidget {
       if (!controller.isLoading.value && controller.weatherData.value != null) {
         final currentTemp = controller.weatherData.value!.current.temperature2m;
 
-        if (currentTemp >= 30) {
-          mainColor = AppBarColorConstants.soleilH;
-        } else if (currentTemp >= 28 && currentTemp < 30) {
+        if (currentTemp >= 35) {
           mainColor = AppBarColorConstants.crepusculeH;
-        } else if (currentTemp >= 22 && currentTemp < 28) {
-          mainColor = AppBarColorConstants.nuitH;
-        } else if (currentTemp >= 0 && currentTemp < 22) {
+        } else if (currentTemp >= 28 && currentTemp < 34) {
+          mainColor = AppBarColorConstants.crepusculeH;
+        } else if (currentTemp >= 27 && currentTemp < 29) {
+          mainColor = AppBarColorConstants.soleilH;
+        } else if (currentTemp >= 20 && currentTemp < 27) {
           mainColor = AppBarColorConstants.pluieH;
         } else {
           mainColor = AppBarColorConstants.neigeH;
@@ -87,16 +87,20 @@ class WeatherView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Transform.translate(
-                          offset: const Offset(-8, 6),
+                          offset: const Offset(-10, 6),
                           child: Temperature(
                             temperature: currentTemp,
                             latitude: weather.latitude,
                             longitude: weather.longitude,
+                            ville: weather.timezone,
                           ),
                         ),
                         const SizedBox(height: 200),
 
-                        HourlyTemperature(weather: weather),
+                        HourlyTemperature(
+                          weather: weather,
+                          temperature: currentTemp,
+                        ),
                         Expanded(
                           child: Container(
                             width: double.infinity,

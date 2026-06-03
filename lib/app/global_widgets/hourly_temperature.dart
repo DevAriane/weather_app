@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../core/constants/images_constants.dart';
 import '../data/models/weather_entity.dart';
+import '../utils/weather_text.dart';
 
 class HourlyTemperature extends StatelessWidget {
+  final double temperature;
   final WeatherEntity weather;
 
-  const HourlyTemperature({super.key, required this.weather});
+  const HourlyTemperature({
+    super.key,
+    required this.weather,
+    required this.temperature,
+  });
 
-  String _getHourlyIcon(double temp) {
-    if (temp >= 30) return ImagesConstants.sunny;
-    if (temp >= 25) return ImagesConstants.partlyCloudy;
-    if (temp >= 20) return ImagesConstants.cloudyAT;
+  String _getHourlyIconFromCode(int code) {
+    if (code == 0) return ImagesConstants.sunny;
+    if (code <= 3) return ImagesConstants.partlyCloudy;
+    if (code <= 65) return ImagesConstants.cloudyAT;
     return ImagesConstants.partlyCN;
   }
 
@@ -21,19 +27,37 @@ class HourlyTemperature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> hoursList = weather.hourly.time;
-    final List<double> tempsList = weather.hourly.temperature2m;
+    final minutelyData = weather.minutely15;
+
+    if (minutelyData == null || minutelyData.time.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(child: Text("Données météo indisponibles")),
+      );
+    }
+
+    final List<String> filteredHours = [];
+    final List<double> filteredTemps = [];
+    final List<int> filteredCodes = [];
+
+    for (int i = 0; i < minutelyData.time.length; i++) {
+      if (i % 2 == 0) {
+        filteredHours.add(minutelyData.time[i]);
+        filteredTemps.add(minutelyData.temperature2m[i]);
+        filteredCodes.add(minutelyData.weatherCode[i]);
+      }
+    }
 
     return Container(
       margin: const EdgeInsets.only(left: 15, top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Text(
-              "Low of 23 degrees, very clear skies.",
-              style: TextStyle(fontSize: 12, color: Color(0xFF474747)),
+              WeatherText.getImageAsset(temp: temperature),
+              style: const TextStyle(fontSize: 12, color: Color(0xFF474747)),
             ),
           ),
           const SizedBox(height: 15),
@@ -42,10 +66,10 @@ class HourlyTemperature extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisSize: MainAxisSize.min,
-
-              children: List.generate(hoursList.length, (index) {
-                final String rawHour = hoursList[index];
-                final double currentTemp = tempsList[index];
+              children: List.generate(filteredHours.length, (index) {
+                final String rawHour = filteredHours[index];
+                final double currentTemp = filteredTemps[index];
+                final int currentCode = filteredCodes[index];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -61,7 +85,7 @@ class HourlyTemperature extends StatelessWidget {
                       const SizedBox(height: 5),
 
                       SvgPicture.asset(
-                        _getHourlyIcon(currentTemp),
+                        _getHourlyIconFromCode(currentCode),
                         height: 18,
                         colorFilter: const ColorFilter.mode(
                           Color(0xFF474747),

@@ -7,11 +7,13 @@ class Temperature extends StatelessWidget {
   double temperature;
   double latitude;
   double longitude;
+  String ville;
   Temperature({
     super.key,
     required this.temperature,
     required this.latitude,
     required this.longitude,
+    required this.ville,
   });
 
   @override
@@ -66,7 +68,7 @@ class Temperature extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  'Sakhon province, Thailand',
+                  ville,
                   maxLines: 2,
                   style: GoogleFonts.nunito(
                     fontSize: 12,

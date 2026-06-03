@@ -2,8 +2,7 @@ import 'package:meteo_app/app/data/models/daily.dart';
 
 import 'current.dart';
 import 'current_units.dart';
-import 'hourly.dart';
-import 'hourly_units.dart';
+import 'minutely15.dart';
 
 class WeatherEntity {
   final double latitude;
@@ -15,8 +14,7 @@ class WeatherEntity {
   final double elevation;
   final CurrentUnits currentUnits;
   final Current current;
-  final HourlyUnits hourlyUnits;
-  final Hourly hourly;
+  final Minutely15? minutely15;
   final Daily daily;
 
   WeatherEntity({
@@ -29,8 +27,7 @@ class WeatherEntity {
     required this.elevation,
     required this.currentUnits,
     required this.current,
-    required this.hourlyUnits,
-    required this.hourly,
+    this.minutely15,
     required this.daily,
   });
 
@@ -45,8 +42,11 @@ class WeatherEntity {
       elevation: (json['elevation'] as num).toDouble(),
       currentUnits: CurrentUnits.fromJson(json['current_units']),
       current: Current.fromJson(json['current']),
-      hourlyUnits: HourlyUnits.fromJson(json['hourly_units']),
-      hourly: Hourly.fromJson(json['hourly']),
+
+      minutely15: json['minutely_15'] != null
+          ? Minutely15.fromJson(json['minutely_15'])
+          : null,
+
       daily: json['daily'] != null
           ? Daily.fromJson(json['daily'])
           : Daily(time: [], temperature2mMax: [], temperature2mMin: []),

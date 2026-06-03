@@ -1,5 +1,5 @@
 class Daily {
-  final List<String> time; 
+  final List<String> time;
   final List<double> temperature2mMax;
   final List<double> temperature2mMin;
 
@@ -12,8 +12,12 @@ class Daily {
   factory Daily.fromJson(Map<String, dynamic> json) {
     return Daily(
       time: List<String>.from(json['time']),
-      temperature2mMax: (json['temperature_2m_max'] as List).map((e) => (e as num).toDouble()).toList(),
-      temperature2mMin: (json['temperature_2m_min'] as List).map((e) => (e as num).toDouble()).toList(),
+      temperature2mMax: (json['temperature_2m_max'] as List)
+          .map((e) => (e as num).toDouble())
+          .toList(),
+      temperature2mMin: (json['temperature_2m_min'] as List)
+          .map((e) => (e as num).toDouble())
+          .toList(),
     );
   }
 }
